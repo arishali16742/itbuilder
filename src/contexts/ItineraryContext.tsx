@@ -481,9 +481,13 @@ export const ItineraryProvider: React.FC<{ children: ReactNode }> = ({ children 
         .from('itineraries')
         .select('*')
         .eq('share_token', shareToken)
-        .single();
+        .maybeSingle();
 
       if (itineraryError) throw itineraryError;
+      
+      if (!itineraryData) {
+        return null;
+      }
 
       // Load days
       const { data: days, error: daysError } = await supabase
